@@ -1,0 +1,35 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          coverage: none
+          tools: composer:v2
+      - run: composer install --no-interaction --prefer-dist
+      - run: vendor/bin/phpunit
+
+  packagist:
+    needs: verify
+    runs-on: ubuntu-24.04
+    env:
+      PACKAGIST_USER: ${{ secrets.PACKAGIST_USER }}
+      PACKAGIST_TOKEN: ${{ secrets.PACKAGIST_TOKEN }}
+    steps:
+      - name: Trigger Packagist update
+        if: env.PACKAGIST_TOKEN != '' 
+        run: |
+          curl -fsS -X POST "https://packagist.org/api/update-package?username=$PACKAGIST_USER&apiToken=$PACKAGIST_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{"repository":{"url":"https://github.com/AZcaptcha/azcaptcha-php"}}'

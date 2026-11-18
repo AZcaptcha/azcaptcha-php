@@ -1,0 +1,27 @@
+{
+    "name": "azcaptcha/azcaptcha-php",
+    "description": "Official AZcaptcha SDK for PHP — reCAPTCHA, hCaptcha, Turnstile and image captchas",
+    "type": "library",
+    "license": "MIT",
+    "keywords": ["captcha", "recaptcha", "hcaptcha", "turnstile", "azcaptcha", "2captcha"],
+    "homepage": "https://azcaptcha.com/lang/php",
+    "authors": [{"name": "AZcaptcha", "email": "support@azcaptcha.com"}],
+    "require": {
+        "php": ">=7.4",
+        "ext-curl": "*",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6 || ^10.5 || ^11.0 || ^12.0"
+    },
+    "autoload": {
+        "psr-4": {"Azcaptcha\\": "src/"}
+    },
+    "autoload-dev": {
+        "psr-4": {"Azcaptcha\\Tests\\": "tests/"},
+        "files": ["tests/fixtures-loader.php"]
+    },
+    "scripts": {
+        "test": "phpunit"
+    }
+}
